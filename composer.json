@@ -8,7 +8,8 @@
     "authors": [
         {
             "name": "Reece Fowell",
-            "email": "reece@codeconsortium.com"
+            "email": "reece@codeconsortium.com",
+			"homepage": "http://www.reecefowell.com"
         }
     ],
     "minimum-stability": "dev",
