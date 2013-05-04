@@ -24,7 +24,7 @@ namespace CCDNComponent\BBCode;
  * @link     https://github.com/codeconsortium/CCDNComponentBBCode
  *
  */
-class BBCodeEngine
+class Bootstrap
 {
     /**
      *
@@ -61,19 +61,19 @@ class BBCodeEngine
     public function __construct($lexemeTable = null, $scanner = null, $lexer = null, $parser = null)
     {
 		if (null == $lexemeTable) {
-			$lexemeTable = CCDNComponent\BBCode\Engine\LexemeTable();
+			$lexemeTable = new \CCDNComponent\BBCode\Engine\LexemeTable();
 		}
 		
 		if (null == $scanner) {
-			$scanner = CCDNComponent\BBCode\Engine\Scanner();
+			$scanner = new \CCDNComponent\BBCode\Engine\Scanner();
 		}
 		
 		if (null == $lexer) {
-			$lexer = CCDNComponent\BBCode\Engine\Lexer();
+			$lexer = new \CCDNComponent\BBCode\Engine\Lexer();
 		}
 		
 		if (null == $parser) {
-			$parser = CCDNComponent\BBCode\Engine\Parser();
+			$parser = new \CCDNComponent\BBCode\Engine\Parser();
 		}
 		
         $this->lexemeTable = $lexemeTable;
