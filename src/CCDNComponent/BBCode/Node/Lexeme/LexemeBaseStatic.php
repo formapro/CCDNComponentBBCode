@@ -13,6 +13,8 @@
 
 namespace CCDNComponent\BBCode\Node\Lexeme;
 
+use CCDNComponent\BBCode\Engine\Table\TableACL;
+
 use CCDNComponent\BBCode\Node\Lexeme\LexemeInterface;
 use CCDNComponent\BBCode\Node\NodeBase;
 
@@ -33,12 +35,6 @@ abstract class LexemeBaseStatic extends NodeBase
 {
     /**
      *
-     * @var object $lexemeTable
-     */
-    protected static $lexemeTable;
-
-    /**
-     *
      * @var bool $isLexable
      */
     protected static $isLexable = true;
@@ -57,16 +53,20 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @var object $nestingACL
+     */
+	protected static $nestingACL;
+	
+    /**
+     *
      * Sets up to initial operations that only need
      * to be run once and stored in a static context.
      *
      * @access public
      */
-    public static function warmup()
+    public static function warmup(/*$tableLexemes*/)
     {
         static::$tokenCount = count(static::$lexingPattern);
-
-        static::compileAllowedSubNodeList();
     }
 	
     /**
@@ -75,23 +75,9 @@ abstract class LexemeBaseStatic extends NodeBase
      * @param  string          $lexingMatch
      * @return LexemeInterface
      */
-    public static function createInstance($lexingMatch)
+    public static function createInstance($groupACL, $lexingMatch)
     {
-        return new static($lexingMatch);
-    }
-
-    /**
-     *
-     * Set the lexeme table object that we will need
-     * for checking allowed lexemes and also returning
-     * new node instances of a given type.
-     *
-     * @access public
-     * @param $lexemeTable
-     */
-    public static function setLexemeTable($lexemeTable)
-    {
-        static::$lexemeTable = $lexemeTable;
+        return new static($groupACL, $lexingMatch);
     }
 
     /**
@@ -261,64 +247,38 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
-     * Goes through the list of available lexemes and
-     * checks them against white and black lists for
-     * this given lexeme, if it is determined it is
-     * allowed, then it is appended to the array of
-     * allowed lexemes.
-     *
-     * @access public
-     */
-    public static function compileAllowedSubNodeList()
-    {
-        if (! static::isStandalone()) {
-            $nodeGroupWhiteList = static::subNodeGroupWhiteList();
-            $nodeGroupBlackList = static::subNodeGroupBlackList();
-            $nodeWhiteList = static::subNodeWhiteList();
-            $nodeBlackList = static::subNodeBlackList();
-
-            $lexemes = static::$lexemeTable->getClassesArray();
-
-            // Compile the list of 'allowed_nestable'
-            foreach ($lexemes as $nestable) {
-
-                // By default all tags can have nested content.
-                // If a black list is defined, everything on the black-list is prevented from being nested.
-                // If a white list is defined, groups on the white-list will override the black-list except individual tags.
-                // To override a blacklisted group for a single tag, white list the tag.
-                if (in_array($nestable::getCanonicalGroupName(), $nodeGroupBlackList) || in_array('*', $nodeGroupBlackList) || in_array('*', $nodeBlackList)) {
-                    if (in_array($nestable::getCanonicalGroupName(), $nodeGroupWhiteList) || in_array($nestable::getCanonicalTokenName(), $nodeWhiteList)) {
-                        if (! in_array($nestable::getCanonicalTokenName(), $nodeBlackList) || in_array($nestable::getCanonicalTokenName(), $nodeWhiteList)) {
-                            static::$allowedNestable[] = $nestable::getCanonicalTokenName();
-                        }
-                     }
-                } else {
-                    if (in_array($nestable::getCanonicalGroupName(), $nodeGroupWhiteList) || in_array('*', $nodeGroupWhiteList) || in_array('*', $nodeWhiteList)) {
-                         if (! in_array($nestable::getCanonicalTokenName(), $nodeBlackList)) {
-                             static::$allowedNestable[] = $nestable::getCanonicalTokenName();
-                         }
-                     } else {
-                        if (in_array($nestable::getCanonicalTokenName(), $nodeWhiteList)) {
-                            static::$allowedNestable[] = $nestable::getCanonicalTokenName();
-                        }
-                     }
-                }
-            } // end foreach
-        }
-    }
-
-    /**
-     *
      * @access public
      * @param \CCDNComponent\BBCodeBundle\Component\Lexemes\LexemeInterface
      * @return bool
      */
     public static function childAllowed(LexemeInterface $lexeme)
     {
-        if (in_array($lexeme->getCanonicalTokenName(), static::$allowedNestable)) {
-            return true;
-        }
-
-        return false;
+		if (! static::isStandalone()) {
+			return static::$nestingACL->hasCanonicalTokenName($lexeme::getCanonicalTokenName());
+		} else {
+			return true;
+		}
     }
+	
+	public static function cascadeACL($lexemeClass)
+	{
+		if (! static::isStandalone()) {
+			if (static::$nestingACL == null) {
+				static::$nestingACL = new TableACL(true, true, static::subNodeGroupWhiteList(), static::subNodeGroupBlackList(), static::subNodeWhiteList(), static::subNodeBlackList());
+			}
+		
+			static::$nestingACL->validate($lexemeClass);
+		}
+	}
+	
+	public static function getNestableClasses()
+	{
+		if (! static::isStandalone()) {
+			if (static::$nestingACL != null) {
+				return static::$nestingACL->getClasses();
+			}
+		}
+		
+		return null;
+	}
 }

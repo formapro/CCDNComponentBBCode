@@ -30,7 +30,7 @@ class Lexer
      *
      * @var LexemeTable $lexemeTable
      */
-    protected static $lexemeTable;
+    protected $lexemeTable;
 
     /**
      *
@@ -53,21 +53,13 @@ class Lexer
     /**
      *
      * @access public
-     * @param LexemeTable $lexemeTable
-     */
-    public static function setLexemeTable($lexemeTable)
-    {
-        static::$lexemeTable = $lexemeTable;
-    }
-
-    /**
-     *
-     * @access public
      * @param  array $scanChunks
      * @return array
      */
-    public function process($scanChunks)
+    public function process($scanChunks, $table)
     {
+		$this->table = $table;
+		
         static::$scanChunks = $scanChunks;
         static::$scanChunksSize = count($scanChunks);
         static::$scanChunksIndex = 0;
@@ -94,7 +86,7 @@ class Lexer
      */
     protected function lexify($parent = null, $node = null)
     {
-        $tree = static::$lexemeTable->createNodeTree();
+        $tree = $this->table->createNodeTree();
 
         if ($parent) {
             $tree->setNodeParent($parent);
@@ -108,7 +100,7 @@ class Lexer
 
             $scanStr = static::$scanChunks[static::$scanChunksIndex];
 
-            $node = static::$lexemeTable->lookup($scanStr);
+            $node = $this->table->lookup($scanStr);
 
             if ($node::isLexable() && !$node::isStandAlone()) {
 

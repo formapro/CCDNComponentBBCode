@@ -91,13 +91,17 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
      */
     protected $parameters = array();
 
+	protected $groupACL;
+	
     /**
      *
      * @access public
      * @param string $lexingMatch
      */
-    public function __construct($lexingMatch)
+    public function __construct($groupACL, $lexingMatch)
     {
+		$this->groupACL = $groupACL;
+		
         $this->lexingMatch = $lexingMatch;
 
         $canonicalLookupStr = strtoupper($lexingMatch);

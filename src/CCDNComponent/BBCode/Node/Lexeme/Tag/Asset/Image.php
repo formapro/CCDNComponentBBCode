@@ -111,10 +111,9 @@ class Image extends LexemeBase implements LexemeInterface
      * are permitted to be valid and rendered between
      * a matching pair of this particular lexeme.
      *
-     * @var array $allowedNestable
+     * @var object $nestingACL
      */
-    protected static $allowedNestable = array();
-    protected static $lexemeTable = array();
+	protected static $nestingACL;
 
     /**
      *

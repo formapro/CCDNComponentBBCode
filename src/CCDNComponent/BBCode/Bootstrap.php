@@ -30,7 +30,7 @@ class Bootstrap
      *
      * @access private
      */
-    protected $lexemeTable;
+    protected $tableContainer;
 
     /**
      *
@@ -49,7 +49,7 @@ class Bootstrap
      * @access protected
      */
     protected $parser;
-
+	
     /**
      *
      * @access private
@@ -58,10 +58,10 @@ class Bootstrap
      * @param Lexer       $lexer
      * @param Parser      $parser
      */
-    public function __construct($lexemeTable = null, $scanner = null, $lexer = null, $parser = null)
+    public function __construct($tableContainer = null, $scanner = null, $lexer = null, $parser = null)
     {
-		if (null == $lexemeTable) {
-			$lexemeTable = new \CCDNComponent\BBCode\Engine\LexemeTable();
+		if (null == $tableContainer) {
+			$tableContainer = new \CCDNComponent\BBCode\Engine\Table\TableContainer();
 		}
 		
 		if (null == $scanner) {
@@ -76,37 +76,46 @@ class Bootstrap
 			$parser = new \CCDNComponent\BBCode\Engine\Parser();
 		}
 		
-        $this->lexemeTable = $lexemeTable;
+        $this->tableContainer = $tableContainer;
 
-        $lexer::setLexemeTable($this->lexemeTable);
         $this->scanner = $scanner;
 
-        $lexer::setLexemeTable($this->lexemeTable);
         $this->lexer = $lexer;
 
-        $parser::setLexemeTable($this->lexemeTable);
         $this->parser = $parser;
     }
-
+	
     /**
      *
      * @access public
      * @return string $html
      */
-    public function process($input)
+    public function process($input, $tableName = null)
     {
-        // Warm up the lexeme table.
-        $this->lexemeTable->setup();
+		if ($tableName == null) {
+			$tableName = 'default';
+		}
+		
+		$table = $this->getTableACL($tableName);
+		
+		if ($table->isParserEnabled()) {
+	        // Split input string by likely tag format.
+	        $scanChunks = $this->scanner->process($input, $table);
 
-        // Split input string by likely tag format.
-        $scanChunks = $this->scanner->process($input);
+	        // Create a symbol tree via the lexer.
+	        $symbolTree = $this->lexer->process($scanChunks, $table);
 
-        // Create a symbol tree via the lexer.
-        $symbolTree = $this->lexer->process($scanChunks);
-
-        // Parse the lexed symbol tree to get an HTML output.
-        $html = $this->parser->process($symbolTree);
+	        // Parse the lexed symbol tree to get an HTML output.
+	        $html = $this->parser->process($symbolTree, $table);
+		} else {
+			$html = '<pre>' . htmlentities($input, ENT_QUOTES) . '</pre>';
+		}
 
         return $html;
     }
+	
+	public function getTableACL($tableName)
+	{
+		return $this->tableContainer->getTableACL($tableName);
+	}
 }

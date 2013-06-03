@@ -34,7 +34,7 @@ interface LexemeInterface
      * @access public
      * @param string $lexingMatch
      */
-    public function __construct($lexingMatch);
+    public function __construct($tableACL, $lexingMatch);
 
     /**
      *

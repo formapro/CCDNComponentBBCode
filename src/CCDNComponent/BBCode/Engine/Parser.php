@@ -28,22 +28,6 @@ class Parser
 {
     /**
      *
-     * @access protected
-     */
-    protected static $lexemeTable;
-
-    /**
-     *
-     * @access public
-     * @param LexemeTable $lexemeTable
-     */
-    public static function setLexemeTable($lexemeTable)
-    {
-        static::$lexemeTable = $lexemeTable;
-    }
-
-    /**
-     *
      * @access public
      * @param  array  $tree
      * @return string
