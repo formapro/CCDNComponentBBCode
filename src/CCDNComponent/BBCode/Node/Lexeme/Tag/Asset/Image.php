@@ -47,6 +47,27 @@ class Image extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Asset';
 
+	/**
+	 * 
+	 * @var string $buttonLabel
+	 */
+	protected static $buttonLabel = 'Add Picture';
+	
+	/**
+	 * 
+	 * @var string $buttonIcon
+	 */
+	protected static $buttonIcon = 'icon-picture';
+
+	/**
+	 * 
+	 * @var string $buttonGroup
+	 */
+	protected static $buttonGroup = array(
+		'group' => null,
+		'order' => null
+	);
+	
     /**
      *
      * 1) First level index should match the token
@@ -115,6 +136,21 @@ class Image extends LexemeBase implements LexemeInterface
      */
 	protected static $nestingACL;
 
+	/**
+	 * 
+	 * Calculated in LexemeBaseStatic::warmup method,
+	 * by number of indices found in $lexingPattern.
+	 * 
+	 * @var int $tokenCount
+	 */
+	protected static $tokenCount;
+	
+	/**
+	 * 
+	 * Question for BBCode Editor to prompt user for tag parameter.
+	 */
+	protected static $buttonParameterQuestion = "Enter Image URL";
+	
     /**
      *
      * @access public

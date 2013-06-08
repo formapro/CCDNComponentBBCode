@@ -54,3 +54,16 @@ div.bb_wrapper div.bbtag_code > ul.nav-tabs > li.active > a {
 div.bb_wrapper .bb_invalid_tag {
 	color:red;
 }
+
+/*
+ *
+ * Editor
+ *
+ */
+div.bb-editor {
+
+}
+
+div.bb-editor > div.collapse {
+	display:collapse;
+}

@@ -1,16 +1,14 @@
 <!--
-/*
- * This file is part of the CCDNComponent BBCodeBundle
+/**
+ * This file is part of the CCDNComponent BBCode
  *
  * (c) CCDN (c) CodeConsortium <http://www.codeconsortium.com/> 
  * 
- * Available on github <http://www.github.com/codeconsortium/CommonBundle>
+ * Available on github <http://www.github.com/codeconsortium/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */
-
-/**
+ *
  * Plugin jQuery.BBEditor
  *
  * @author Reece Fowell <reece at codeconsortium dot com>
@@ -21,197 +19,147 @@
  * JQuery needs to be loaded before this script in order for it to work.
  * @link http://jquery.com/
  *
- * Based on jQuery.BBCode plugin 
- * @link http://www.webcheatsheet.com/javascript/bbcode_editor.php
- * @link http://www.kamaikinproject.ru
  */
 
 $(document).ready(function() {
-	console.log('begin...');
-	$('[class~="bb-block"]').bbeditor();
+	$('div.bb-editor').bbeditor();
 });
-
-//(function($) {
-//	$.fn.bbeditor = function() {
 
 !function($) {
 
-	//
-	// BBEDITOR PLUGIN DEFINITION
-	//
+	/*
+	 *
+	 * BBEDITOR PLUGIN DEFINITION
+	 */
 	$.fn.bbeditor = function () {
 		var iters = [];
 
-		return this.each(function() {
+		this.each(function() {
 			var $this = $(this);
 			
-			console.log('button: ' + $this.data('tag'));
-			
-			var obj = new BBEditor($this);
-			//setInterval($.proxy(obj.refresh,obj), obj.params.interval);
-			$(this).click($.proxy(obj.click));
+			var editor = new BBEditor($this);
 		});
-
 	};
 
-	//
-	// BBEDITOR PUBLIC CLASS DEFINITION
-	//
-	var BBEditor = function (element) {
-		this.init('bbeditor', element);
+	/*
+	 *
+	 * BBEDITOR PUBLIC CLASS DEFINITION
+	 */
+	function BBEditor(element) {
+		this.init(element);
 	};
+	
+	BBEditor.prototype.init = function (container) {
+		// Get TextArea.
+		this.textarea = $(container).find('textarea').eq(0);
+		
+		// Get Toolbars
+		this.collapse = $(container).find('div.collapse');
+		
+		// Unhide the bb editor buttons/toolbars
+		this.collapse.each(function(i, collapse) {
+			$(collapse).removeClass('collapse');
+		});
+		
+		// Get Buttons.
+		fn = this.buttonClick;
 
-	BBEditor.prototype = {
+		// Stupid hack Part 1, because 'this' in a bound click event
+		// refers to the button or whatever instead of this freaking class.
+		var that = this;
 
-		constructor: BBEditor,
+		this.buttons = $(container).find('button').filter('button');
 		
-		init: function (type, element) {
+		// Bind button click event to all bb editor buttons.
+		this.buttons.each(function(i, button) {
+			$(button).bind('click', {editor: that}, fn);
+		});
+	};
+		
+	BBEditor.prototype.insertToken = function (btn) {
+		var txt = this.textarea;
+		var tag = btn.data('tag');
+		var tagCount = btn.data('tag-count');
+		var paramQuestion = btn.data('param-question');
+		
+		if (paramQuestion) {
+			var param = window.prompt(paramQuestion, "");
+		} else {
+			var param = null;
+		}
+
+	    var txtLen = txt.val().length;
+	    var selStart = txt[0].selectionStart;
+	    var selEnd = txt[0].selectionEnd;
+	    var selectedText = txt.val().substring(selStart, selEnd);
+		
+		if (paramQuestion && (param == null || param == '' || param == false)) {
+			txt.focus();
 			
-		},
-					
-		getSelectedText: function (el) {
-			console.log('boooo');
-			
-		    if (typeof el.selectionStart == "number") {
-				console.log('sel' + el.selectionStart);
-		        return el.value.slice(el.selectionStart, el.selectionEnd);
-		    } else if (typeof document.selection != "undefined") {
-				console.log('sel' + document.selection);
-		        var range = document.selection.createRange();
-		        if (range.parentElement() == el) {
-		            return range.text;
-		        }
-		    }
-		    return "";
-		},
+			return;
+		} else {
+			if (param != null) {
+				param = '="' + param + '"';
+				
+				var tagOpen = '[' + tag + param + ']';
+			} else {
+				var tagOpen = '[' + tag + ']';
+			}
+		}
 		
-		click: function(event) {
-//			var btn = $(this);
-//			var txt = $('#' + btn.data('target-textarea'));
-//			
-			console.log($(this).data('tag'));
-			console.log($(this).data('target-textarea'));
-//			console.log(btn.data('tag'));
-//			console.log(txt.attr('id'));
-//			var r = getSelectedText(txt);
-		},
 		
-//		$('[class~="bb-block"]').click(function(event) {
-//			
-//			var btn = $(this);
-//			var txt = $('#' + btn.data('target-textarea'));
-//			
-////			console.log($(this).data('tag'));
-////			console.log($(this).data('target-textarea'));
-//			console.log(btn.data('tag'));
-//			console.log(txt.attr('id'));
-//			var r = getSelectedText(txt);
-//			
-//			console.log(r);
-//			
-//			// "[data-tag='" + event.target.data('data-tag') + "']"
-//		});
+		var tagClose = '[/' + tag + ']';
+
+		if (tagCount > 1) {
+		    var replacement = tagOpen + selectedText + tagClose;
+		} else {
+		    var replacement = selectedText + tagOpen;
+		}
 		
+	    txt.val(txt.val().substring(0, selStart) + replacement + txt.val().substring(selEnd, txtLen));
+		
+		if ((selEnd - selStart) == 0 && tagCount > 1) {
+			// Place Caret between tags.
+			caretPosition = selEnd + ((tagOpen.length));
+		} else {
+			// Place Caret at end of Insert.
+			if (tagCount > 1) {
+				caretPosition = selEnd + ((tagOpen.length + tagClose.length));
+			} else {
+				caretPosition = selEnd + ((tagOpen.length));
+			}
+		}
+		
+		// Bring focus back to the textarea.
+		this.setCaretToPosition(caretPosition, caretPosition);
+	}
+	
+	BBEditor.prototype.setCaretToPosition = function (selStart, selEnd) {
+		var txt = this.textarea;
+
+		txt[0].selectionStart = caretPosition;
+		txt[0].selectionEnd = caretPosition;
+		
+		txt.focus();
+	}
+
+	BBEditor.prototype.buttonClick = function (event) {
+		// Prevent default form submission behaviour.
+		event.preventDefault();
+		event.stopPropagation();
+		
+		// Get the button that was clicked.
+		var btn = $(this);
+		
+		// Stupid hack, what arsehole thought this would be a good idea.
+		var that = event.data.editor;
+		
+		// Insert the tag for the button clicked.
+		that.insertToken(btn);
+		
+		return;
 	};
 	
 }(window.jQuery);
-
-
-//function getSelectedText(el) {
-//    if (typeof el.selectionStart == "number") {
-//        return el.value.slice(el.selectionStart, el.selectionEnd);
-//    } else if (typeof document.selection != "undefined") {
-//        var range = document.selection.createRange();
-//        if (range.parentElement() == el) {
-//            return range.text;
-//        }
-//    }
-//    return "";
-//}
-//
-//function getLeftOfSel(el) {
-//	if (typeof el.selectionStart == "number") {
-//        return el.value.slice(0, el.selectionStart);
-//    } else if (typeof document.selection != "undefined") {
-//        var range = document.selection.createRange();
-//        if (range.parentElement() == el) {
-//			range.setEnd(el, range.getStart());
-//			range.setStart(el, 0);
-//            return range.text;
-//        }
-//    }
-//    return "";
-//}
-//
-//function getRightOfSel(el) {
-//	if (typeof el.selectionStart == "number") {
-//        return el.value.slice(el.selectionEnd, el.value.length);
-//    } else if (typeof document.selection != "undefined") {
-//        var range = document.selection.createRange();
-//        if (range.parentElement() == el) {
-//			range.setStart(el, range.getEnd());
-//			range.setEnd(el, (el.value.length - range.getEnd()));
-//            return range.text;
-//        }
-//    }
-//    return "";
-//}
-//
-//function addBlock(event, targetTextArea) {
-//	
-////	if ( ! event.target.getAttribute('data-tag')) { 
-////		console.log('unknown data-tag');
-////		return true;
-////	}
-//	
-//	//var src = $(txt);
-//	
-//	//console.log(targetTextArea);
-//	//return;
-//			
-//	var btn = $("[data-tag='" + event.target.data('data-tag') + "']");
-//	var txt = $(btn.data('target-textarea'));
-//	
-//	
-//		console.log(txt.id);
-//		console.log('sel: ' + getSelectedText(txt) + '');
-//		console.log('event: ' + event.target.getAttribute('data-tag'));
-//	//	console.log('$event: ' + $(event.target).data('tag'));
-//	
-//	
-//	var param = (btn.data('ask-param')) ? '=' + prompt(btn.data('ask-param')) : (btn.data('use-param')) ? '=' + btn.data('use-param') : '';
-//	var value = (btn.data('ask-value')) ? prompt(btn.data('ask-value')) : getSelectedText(txt);
-//	
-//	var start = '[' + btn.data('tag') + param + ']';
-//	var end = '[/' + btn.data('tag') + ']';
-//	
-//	var tag = start + value + end;
-//		
-//	var los = getLeftOfSel(txt);
-//	var ros = getRightOfSel(txt);
-//	
-////	console.log('los: ' + los);
-////	console.log('tag: ' + tag);
-////	console.log('ros: ' + ros);
-//
-////	console.log('los + tag: ' + los + tag);
-////	console.log('tag + ros: ' + tag + ros);
-////	console.log('result: ' + los + tag + ros);
-//	
-//	txt.value = los + tag + ros;		
-//}
-//
-//function addSmiley(target) {
-//	var src = document.getElementById(target);
-//	var btn = $(event.target);
-//
-//	var start = '[' + $(this).data('tag') + ']';
-//	var end = '';
-//
-//	this.insert(start, value, end, $(target.id));
-//
-//	return true;
-//}
-
 
 // -->

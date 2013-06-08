@@ -47,6 +47,27 @@ class Youtube extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Asset';
 
+	/**
+	 * 
+	 * @var string $buttonLabel
+	 */
+	protected static $buttonLabel = 'Youtube';
+	
+	/**
+	 * 
+	 * @var string $buttonIcon
+	 */
+	protected static $buttonIcon = '';
+	
+	/**
+	 * 
+	 * @var string $buttonGroup
+	 */
+	protected static $buttonGroup = array(
+		'group' => 'webvideo',
+		'order' => 0
+	);
+	
     /**
      *
      * 1) First level index should match the token
@@ -115,6 +136,21 @@ class Youtube extends LexemeBase implements LexemeInterface
      */
 	protected static $nestingACL;
 
+	/**
+	 * 
+	 * Calculated in LexemeBaseStatic::warmup method,
+	 * by number of indices found in $lexingPattern.
+	 * 
+	 * @var int $tokenCount
+	 */
+	protected static $tokenCount;
+	
+	/**
+	 * 
+	 * Question for BBCode Editor to prompt user for tag parameter.
+	 */
+	protected static $buttonParameterQuestion = "Enter Youtube Video ID";
+	
     /**
      *
      * @access public

@@ -47,6 +47,27 @@ class Heading2 extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Format';
 
+	/**
+	 * 
+	 * @var string $buttonLabel
+	 */
+	protected static $buttonLabel = 'H2';
+	
+	/**
+	 * 
+	 * @var string $buttonIcon
+	 */
+	protected static $buttonIcon = '';
+	
+	/**
+	 * 
+	 * @var string $buttonGroup
+	 */
+	protected static $buttonGroup = array(
+		'group' => 'heading',
+		'order' => 1
+	);
+	
     /**
      *
      * 1) First level index should match the token
@@ -115,6 +136,15 @@ class Heading2 extends LexemeBase implements LexemeInterface
      */
 	protected static $nestingACL;
 
+	/**
+	 * 
+	 * Calculated in LexemeBaseStatic::warmup method,
+	 * by number of indices found in $lexingPattern.
+	 * 
+	 * @var int $tokenCount
+	 */
+	protected static $tokenCount;
+	
     /**
      *
      * @access public

@@ -35,42 +35,54 @@ abstract class LexemeBaseStatic extends NodeBase
 {
     /**
      *
+     * @static
      * @var bool $isLexable
      */
     protected static $isLexable = true;
 
     /**
      *
+     * @static
      * @var bool $isStandalone
      */
     protected static $isStandalone = true;
 
     /**
      *
+     * @static
      * @var int $tokenCount
      */
     protected static $tokenCount = 0;
 
     /**
      *
+     * @static
      * @var object $nestingACL
      */
 	protected static $nestingACL;
+	
+	/**
+	 * 
+	 * Question for BBCode Editor to prompt user for tag parameter.
+	 */
+	protected static $buttonParameterQuestion = "";
 	
     /**
      *
      * Sets up to initial operations that only need
      * to be run once and stored in a static context.
      *
+     * @static
      * @access public
      */
-    public static function warmup(/*$tableLexemes*/)
+    public static function warmup()
     {
         static::$tokenCount = count(static::$lexingPattern);
     }
 	
     /**
      *
+     * @static
      * @access public
      * @param  string          $lexingMatch
      * @return LexemeInterface
@@ -82,6 +94,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return string
      */
@@ -92,6 +105,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return string
      */
@@ -102,6 +116,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return string
      */
@@ -112,6 +127,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -122,6 +138,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -132,6 +149,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -142,6 +160,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return int
      */
@@ -156,6 +175,7 @@ abstract class LexemeBaseStatic extends NodeBase
      * a tree node or a lexeme node, which is important
      * during both validation and rendering cascading.
      *
+     * @static
      * @access public
      * @return bool
      */
@@ -166,6 +186,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return int
      */
@@ -180,6 +201,7 @@ abstract class LexemeBaseStatic extends NodeBase
      * patterns in the form of regex strings to find a match.
      * Returns true immediately when match is found.
      *
+     * @static
      * @access public
      * @param  string $lookupStr
      * @return bool
@@ -199,6 +221,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -211,6 +234,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -223,6 +247,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -235,6 +260,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @return array
      */
@@ -247,6 +273,7 @@ abstract class LexemeBaseStatic extends NodeBase
 
     /**
      *
+     * @static
      * @access public
      * @param \CCDNComponent\BBCodeBundle\Component\Lexemes\LexemeInterface
      * @return bool
@@ -260,6 +287,13 @@ abstract class LexemeBaseStatic extends NodeBase
 		}
     }
 	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @param mixed $lexemeClass
+	 * @return array
+	 */
 	public static function cascadeACL($lexemeClass)
 	{
 		if (! static::isStandalone()) {
@@ -271,6 +305,12 @@ abstract class LexemeBaseStatic extends NodeBase
 		}
 	}
 	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @return array
+	 */
 	public static function getNestableClasses()
 	{
 		if (! static::isStandalone()) {
@@ -280,5 +320,49 @@ abstract class LexemeBaseStatic extends NodeBase
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @return string
+	 */
+	public static function getButtonLabel()
+	{
+		return static::$buttonLabel;
+	}
+	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @return string
+	 */
+	public static function getButtonIcon()
+	{
+		return static::$buttonIcon;
+	}
+	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @return array
+	 */
+	public static function getButtonGroup()
+	{
+		return static::$buttonGroup;
+	}
+	
+	/**
+	 * 
+	 * @static
+	 * @access public
+	 * @return string
+	 */
+	public static function getButtonParameterQuestion()
+	{
+		return static::$buttonParameterQuestion;
 	}
 }

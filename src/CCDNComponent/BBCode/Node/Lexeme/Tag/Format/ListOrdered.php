@@ -47,6 +47,27 @@ class ListOrdered extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Format';
 
+	/**
+	 * 
+	 * @var string $buttonLabel
+	 */
+	protected static $buttonLabel = 'Ordered List';
+	
+	/**
+	 * 
+	 * @var string $buttonIcon
+	 */
+	protected static $buttonIcon = 'icon-list';
+	
+	/**
+	 * 
+	 * @var string $buttonGroup
+	 */
+	protected static $buttonGroup = array(
+		'group' => 'list',
+		'order' => 0
+	);
+	
     /**
      *
      * 1) First level index should match the token
@@ -115,6 +136,15 @@ class ListOrdered extends LexemeBase implements LexemeInterface
      */
 	protected static $nestingACL;
 
+	/**
+	 * 
+	 * Calculated in LexemeBaseStatic::warmup method,
+	 * by number of indices found in $lexingPattern.
+	 * 
+	 * @var int $tokenCount
+	 */
+	protected static $tokenCount;
+	
     /**
      *
      * @access public

@@ -161,8 +161,8 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
      * Sets the matching node paired with this one.
      *
      * @access public
-     * @param NodeInterface $node
-     * @param string        $id
+     * @param  NodeInterface $node
+     * @param  string        $id
      */
     public function setMatchingNode(LexemeInterface $node, $id)
     {
