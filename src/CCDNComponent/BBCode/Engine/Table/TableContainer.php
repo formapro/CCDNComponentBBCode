@@ -61,7 +61,7 @@ class TableContainer
      *
      * @var array $tableLexemes
      */
-	protected $lexemeClasses;
+	protected $lexemeClasses = array();
 	
 	/**
      *
@@ -79,9 +79,7 @@ class TableContainer
 			$lexemeClasses = $this->lexemeClassesDefault;
 		}
 		
-		$this->lexemeClasses = $lexemeClasses;
-		
-		$this->setTableLexemes();
+		$this->setTableLexemes($lexemeClasses);
 		
 		if ($acl == null) {
 			$acl = array(
@@ -103,9 +101,11 @@ class TableContainer
 		$this->setTableACL($acl);
     }
 	
-	public function setTableLexemes()
+	public function setTableLexemes($lexemeClasses)
 	{
-		foreach ($this->lexemeClasses as $lexeme) {
+		$this->lexemeClasses = array_merge($this->lexemeClasses, $lexemeClasses);
+		
+		foreach ($lexemeClasses as $lexeme) {
 			$lexeme::warmup();
 			
 			foreach ($this->lexemeClasses as $nestable) {
