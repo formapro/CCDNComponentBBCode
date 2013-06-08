@@ -136,11 +136,14 @@ class PlainText extends LexemeBase implements LexemeInterface
 
         if ($parent) {
             $fn = $parent->getNodeFirst();
-            if ($fn) {
-                if ($fn::getCanonicalGroupName() != 'Format') {
-                    return htmlentities(ltrim(rtrim($this->lexingMatch)), ENT_QUOTES).'&shy;';
-                }
-            }
+			
+			if (! $fn::isTree()) {
+	            if ($fn) {
+	                if ($fn::getCanonicalGroupName() != 'Format') {
+	                    return htmlentities(ltrim(rtrim($this->lexingMatch)), ENT_QUOTES).'&shy;';
+	                }
+	            }
+			}
         }
 
         // &shy; is an invisible char, without it, PHP ignores newlines for some reason, very unusual behaviour.
