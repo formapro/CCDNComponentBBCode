@@ -124,7 +124,7 @@ class Youtube extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingHtml
      */
-    protected static $lexingHtml = array('<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ param[0] }}" frameborder="0" allowfullscreen></iframe>');
+    protected static $lexingHtml = array('</pre><center><iframe width="560" height="315" src="http://www.youtube.com/embed/{{ param[0] }}" frameborder="0" allowfullscreen></iframe></center><pre>');
 
     /**
      *
@@ -202,7 +202,7 @@ class Youtube extends LexemeBase implements LexemeInterface
     public function cascadeRender()
     {
         if ($this->isValid(true)) {
-            return str_replace('{{ param[0] }}', '<strong>' . htmlentities($this->parameters[0], ENT_QUOTES) . '</strong><hr>', static::$lexingHtml[$this->tokenIndex]);
+            return str_replace('{{ param[0] }}', htmlentities($this->parameters[0], ENT_QUOTES), static::$lexingHtml[$this->tokenIndex]);
         }
 
         return $this->renderErrors();

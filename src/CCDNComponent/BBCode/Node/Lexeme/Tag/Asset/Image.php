@@ -103,7 +103,7 @@ class Image extends LexemeBase implements LexemeInterface
      *
      * @var bool $isStandalone
      */
-    protected static $isStandalone = true;
+    protected static $isStandalone = false;
 
     /**
      *
@@ -113,7 +113,7 @@ class Image extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingPattern
      */
-    protected static $lexingPattern = array('/^\[IMG?(\=(.*?)*)\]$/');
+    protected static $lexingPattern = array('/^\[IMG?(\=(.*?)*)\]$/', '/^\[\/IMG\]$/');
 
     /**
      *
@@ -124,7 +124,7 @@ class Image extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingHtml
      */
-    protected static $lexingHtml = array('<img src="{{ param[0] }}" title="{{ param[1] }}" />');
+    protected static $lexingHtml = array('</pre><center><img src="{{ param[0] }}" title="{{ param[0] }}" /><br><i>', '</i></center><pre>');
 
     /**
      *
@@ -167,8 +167,18 @@ class Image extends LexemeBase implements LexemeInterface
         // 2. Check Parameter meets some criteria.
         if (is_array($param) && count($param) > 2) {
             // 3. Store Parameter.
-            $this->parameters[0] = $param[2];
+            //$this->parameters[0] = $param[2];
+            $protocol = preg_split('/^(http|https|ftp)\:\/\//', $param[2], null, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
 
+            // 3. Store Parameter.
+            if ($protocol[0] == 'http' || $protocol[0] == 'https' || $protocol[0] == 'ftp') {
+                $url = $param[2];
+            } else {
+                $url = 'http://' . $param[2];
+            }
+
+            $this->parameters[0] = $url;
+			
             return true;
         }
 
@@ -180,16 +190,16 @@ class Image extends LexemeBase implements LexemeInterface
      * @access public
      * @return bool
      */
-    public function areAllParametersValid()
-    {
-        if (array_key_exists(0, $this->parameters)) {
-            if ($this->parameters[0] !== null) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    //public function areAllParametersValid()
+    //{
+    //    if (array_key_exists(0, $this->parameters)) {
+    //        if ($this->parameters[0] !== null) {
+    //            return true;
+    //        }
+    //    }
+    //
+    //    return false;
+    //}
 
     /**
      *
@@ -202,9 +212,17 @@ class Image extends LexemeBase implements LexemeInterface
     public function cascadeRender()
     {
         if ($this->isValid(true)) {
-            return str_replace('{{ param[0] }}', '<strong>' . $this->parameters[0] . '</strong><hr>', static::$lexingHtml[$this->tokenIndex]);
-        }
+            if ($this->tokenIndex == 0) {
+                if (array_key_exists(0, $this->parameters)) {
+                    return str_replace('{{ param[0] }}', $this->parameters[0], static::$lexingHtml[$this->tokenIndex]);
+                }
 
+                return str_replace('{{ param[0] }}', '', static::$lexingHtml[$this->tokenIndex]);
+            } else {
+                return str_replace('{{ param[0] }}', '', static::$lexingHtml[$this->tokenIndex]);
+            }
+        }
+		
         return $this->renderErrors();
     }
 

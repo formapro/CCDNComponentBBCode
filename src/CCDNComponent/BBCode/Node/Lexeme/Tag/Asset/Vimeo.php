@@ -124,7 +124,7 @@ class Vimeo extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingHtml
      */
-    protected static $lexingHtml = array('<iframe src="http://player.vimeo.com/video/{{ param[0] }}?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
+    protected static $lexingHtml = array('</pre><center><iframe src="http://player.vimeo.com/video/{{ param[0] }}?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></center><pre>');
 
     /**
      *
@@ -202,7 +202,7 @@ class Vimeo extends LexemeBase implements LexemeInterface
     public function cascadeRender()
     {
         if ($this->isValid(true)) {
-            return str_replace('{{ param[0] }}', '<strong>' . htmlentities($this->parameters[0], ENT_QUOTES) . '</strong><hr>', static::$lexingHtml[$this->tokenIndex]);
+            return str_replace('{{ param[0] }}', htmlentities($this->parameters[0], ENT_QUOTES), static::$lexingHtml[$this->tokenIndex]);
         }
 
         return $this->renderErrors();
