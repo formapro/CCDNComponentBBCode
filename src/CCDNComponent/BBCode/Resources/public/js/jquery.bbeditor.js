@@ -32,12 +32,12 @@ $(document).ready(function() {
 	 * BBEDITOR PLUGIN DEFINITION
 	 */
 	$.fn.bbeditor = function () {
-		var iters = [];
+		var editors = $([]);
 
 		this.each(function() {
 			var $this = $(this);
 			
-			var editor = new BBEditor($this);
+			editors.push(new BBEditor($this));
 		});
 	};
 
