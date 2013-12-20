@@ -47,27 +47,27 @@ class CodeGroup extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Block';
 
-	/**
-	 * 
-	 * @var string $buttonLabel
-	 */
-	protected static $buttonLabel = 'Code Group';
-	
-	/**
-	 * 
-	 * @var string $buttonIcon
-	 */
-	protected static $buttonIcon = '';
-	
-	/**
-	 * 
-	 * @var string $buttonGroup
-	 */
-	protected static $buttonGroup = array(
-		'group' => 'block',
-		'order' => 2
-	);
-	
+    /**
+     *
+     * @var string $buttonLabel
+     */
+    protected static $buttonLabel = 'Code Group';
+
+    /**
+     *
+     * @var string $buttonIcon
+     */
+    protected static $buttonIcon = '';
+
+    /**
+     *
+     * @var string $buttonGroup
+     */
+    protected static $buttonGroup = array(
+        'group' => 'block',
+        'order' => 2
+    );
+
     /**
      *
      * 1) First level index should match the token
@@ -134,17 +134,17 @@ class CodeGroup extends LexemeBase implements LexemeInterface
      *
      * @var object $nestingACL
      */
-	protected static $nestingACL;
+    protected static $nestingACL;
 
-	/**
-	 * 
-	 * Calculated in LexemeBaseStatic::warmup method,
-	 * by number of indices found in $lexingPattern.
-	 * 
-	 * @var int $tokenCount
-	 */
-	protected static $tokenCount;
-	
+    /**
+     *
+     * Calculated in LexemeBaseStatic::warmup method,
+     * by number of indices found in $lexingPattern.
+     *
+     * @var int $tokenCount
+     */
+    protected static $tokenCount;
+
     /**
      *
      * Renders the html from the $lexingHtml index matching

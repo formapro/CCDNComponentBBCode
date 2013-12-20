@@ -91,8 +91,8 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
      */
     protected $parameters = array();
 
-	protected $groupACL;
-	
+    protected $groupACL;
+
     /**
      *
      * @access public
@@ -100,8 +100,8 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
      */
     public function __construct($groupACL, $lexingMatch)
     {
-		$this->groupACL = $groupACL;
-		
+        $this->groupACL = $groupACL;
+
         $this->lexingMatch = $lexingMatch;
 
         $canonicalLookupStr = strtoupper($lexingMatch);
@@ -161,8 +161,8 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
      * Sets the matching node paired with this one.
      *
      * @access public
-     * @param  NodeInterface $node
-     * @param  string        $id
+     * @param NodeInterface $node
+     * @param string        $id
      */
     public function setMatchingNode(LexemeInterface $node, $id)
     {

@@ -1,3 +1,4 @@
+
 div.bb_wrapper > pre,
 div.bb_wrapper pre {
 	border:none;
@@ -25,20 +26,27 @@ div.bb_wrapper blockquote > pre {
 
 
 div.bb_wrapper div.bbtag_code {
-	/*border:2px solid red;*/
+
 }
 
 div.bb_wrapper div.bbtag_code > pre {
+	background-color:#333;
 	margin:0px;
 	padding:0px;
 }
 div.bb_wrapper div.bbtag_code > pre > code {
-	background-color:#333;	
+
 }
+
 div.bb_wrapper div.bbtag_code > ul.nav-tabs {
 	margin-left:10px;
 	margin-right:10px;
 	margin-bottom:0px;
+}
+
+div.bb_wrapper div.bbtag_code > ul.nav-tabs > li {
+	margin:0px;
+	padding:0px;
 }
 
 div.bb_wrapper div.bbtag_code > ul.nav-tabs > li > a {

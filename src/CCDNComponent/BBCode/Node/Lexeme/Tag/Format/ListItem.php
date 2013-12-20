@@ -47,27 +47,27 @@ class ListItem extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Format';
 
-	/**
-	 * 
-	 * @var string $buttonLabel
-	 */
-	protected static $buttonLabel = 'Add Picture';
-	
-	/**
-	 * 
-	 * @var string $buttonIcon
-	 */
-	protected static $buttonIcon = 'icon-ok-sign';
-	
-	/**
-	 * 
-	 * @var string $buttonGroup
-	 */
-	protected static $buttonGroup = array(
-		'group' => 'list',
-		'order' => 2
-	);
-	
+    /**
+     *
+     * @var string $buttonLabel
+     */
+    protected static $buttonLabel = 'Add Picture';
+
+    /**
+     *
+     * @var string $buttonIcon
+     */
+    protected static $buttonIcon = 'glyphicon glyphicon-ok-sign';
+
+    /**
+     *
+     * @var string $buttonGroup
+     */
+    protected static $buttonGroup = array(
+        'group' => 'list',
+        'order' => 2
+    );
+
     /**
      *
      * 1) First level index should match the token
@@ -134,17 +134,17 @@ class ListItem extends LexemeBase implements LexemeInterface
      *
      * @var object $nestingACL
      */
-	protected static $nestingACL;
+    protected static $nestingACL;
 
-	/**
-	 * 
-	 * Calculated in LexemeBaseStatic::warmup method,
-	 * by number of indices found in $lexingPattern.
-	 * 
-	 * @var int $tokenCount
-	 */
-	protected static $tokenCount;
-	
+    /**
+     *
+     * Calculated in LexemeBaseStatic::warmup method,
+     * by number of indices found in $lexingPattern.
+     *
+     * @var int $tokenCount
+     */
+    protected static $tokenCount;
+
     /**
      *
      * @access public

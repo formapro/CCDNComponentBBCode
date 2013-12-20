@@ -59,14 +59,14 @@ abstract class LexemeBaseStatic extends NodeBase
      * @static
      * @var object $nestingACL
      */
-	protected static $nestingACL;
-	
-	/**
-	 * 
-	 * Question for BBCode Editor to prompt user for tag parameter.
-	 */
-	protected static $buttonParameterQuestion = "";
-	
+    protected static $nestingACL;
+
+    /**
+     *
+     * Question for BBCode Editor to prompt user for tag parameter.
+     */
+    protected static $buttonParameterQuestion = "";
+
     /**
      *
      * Sets up to initial operations that only need
@@ -79,7 +79,7 @@ abstract class LexemeBaseStatic extends NodeBase
     {
         static::$tokenCount = count(static::$lexingPattern);
     }
-	
+
     /**
      *
      * @static
@@ -280,89 +280,89 @@ abstract class LexemeBaseStatic extends NodeBase
      */
     public static function childAllowed(LexemeInterface $lexeme)
     {
-		if (! static::isStandalone()) {
-			return static::$nestingACL->hasCanonicalTokenName($lexeme::getCanonicalTokenName());
-		} else {
-			return true;
-		}
+        if (! static::isStandalone()) {
+            return static::$nestingACL->hasCanonicalTokenName($lexeme::getCanonicalTokenName());
+        } else {
+            return true;
+        }
     }
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @param mixed $lexemeClass
-	 * @return array
-	 */
-	public static function cascadeACL($lexemeClass)
-	{
-		if (! static::isStandalone()) {
-			if (static::$nestingACL == null) {
-				static::$nestingACL = new TableACL(true, true, static::subNodeGroupWhiteList(), static::subNodeGroupBlackList(), static::subNodeWhiteList(), static::subNodeBlackList());
-			}
-		
-			static::$nestingACL->validate($lexemeClass);
-		}
-	}
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @return array
-	 */
-	public static function getNestableClasses()
-	{
-		if (! static::isStandalone()) {
-			if (static::$nestingACL != null) {
-				return static::$nestingACL->getClasses();
-			}
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @return string
-	 */
-	public static function getButtonLabel()
-	{
-		return static::$buttonLabel;
-	}
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @return string
-	 */
-	public static function getButtonIcon()
-	{
-		return static::$buttonIcon;
-	}
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @return array
-	 */
-	public static function getButtonGroup()
-	{
-		return static::$buttonGroup;
-	}
-	
-	/**
-	 * 
-	 * @static
-	 * @access public
-	 * @return string
-	 */
-	public static function getButtonParameterQuestion()
-	{
-		return static::$buttonParameterQuestion;
-	}
+
+    /**
+     *
+     * @static
+     * @access public
+     * @param  mixed $lexemeClass
+     * @return array
+     */
+    public static function cascadeACL($lexemeClass)
+    {
+        if (! static::isStandalone()) {
+            if (static::$nestingACL == null) {
+                static::$nestingACL = new TableACL(true, true, static::subNodeGroupWhiteList(), static::subNodeGroupBlackList(), static::subNodeWhiteList(), static::subNodeBlackList());
+            }
+
+            static::$nestingACL->validate($lexemeClass);
+        }
+    }
+
+    /**
+     *
+     * @static
+     * @access public
+     * @return array
+     */
+    public static function getNestableClasses()
+    {
+        if (! static::isStandalone()) {
+            if (static::$nestingACL != null) {
+                return static::$nestingACL->getClasses();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @static
+     * @access public
+     * @return string
+     */
+    public static function getButtonLabel()
+    {
+        return static::$buttonLabel;
+    }
+
+    /**
+     *
+     * @static
+     * @access public
+     * @return string
+     */
+    public static function getButtonIcon()
+    {
+        return static::$buttonIcon;
+    }
+
+    /**
+     *
+     * @static
+     * @access public
+     * @return array
+     */
+    public static function getButtonGroup()
+    {
+        return static::$buttonGroup;
+    }
+
+    /**
+     *
+     * @static
+     * @access public
+     * @return string
+     */
+    public static function getButtonParameterQuestion()
+    {
+        return static::$buttonParameterQuestion;
+    }
 }

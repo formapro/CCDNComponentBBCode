@@ -58,8 +58,8 @@ class Lexer
      */
     public function process($scanChunks, $table)
     {
-		$this->table = $table;
-		
+        $this->table = $table;
+
         static::$scanChunks = $scanChunks;
         static::$scanChunksSize = count($scanChunks);
         static::$scanChunksIndex = 0;

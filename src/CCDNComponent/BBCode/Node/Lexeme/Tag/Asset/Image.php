@@ -47,27 +47,27 @@ class Image extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Asset';
 
-	/**
-	 * 
-	 * @var string $buttonLabel
-	 */
-	protected static $buttonLabel = 'Add Picture';
-	
-	/**
-	 * 
-	 * @var string $buttonIcon
-	 */
-	protected static $buttonIcon = 'icon-picture';
+    /**
+     *
+     * @var string $buttonLabel
+     */
+    protected static $buttonLabel = 'Add Picture';
 
-	/**
-	 * 
-	 * @var string $buttonGroup
-	 */
-	protected static $buttonGroup = array(
-		'group' => null,
-		'order' => null
-	);
-	
+    /**
+     *
+     * @var string $buttonIcon
+     */
+    protected static $buttonIcon = 'glyphicon glyphicon-picture';
+
+    /**
+     *
+     * @var string $buttonGroup
+     */
+    protected static $buttonGroup = array(
+        'group' => null,
+        'order' => null
+    );
+
     /**
      *
      * 1) First level index should match the token
@@ -134,23 +134,23 @@ class Image extends LexemeBase implements LexemeInterface
      *
      * @var object $nestingACL
      */
-	protected static $nestingACL;
+    protected static $nestingACL;
 
-	/**
-	 * 
-	 * Calculated in LexemeBaseStatic::warmup method,
-	 * by number of indices found in $lexingPattern.
-	 * 
-	 * @var int $tokenCount
-	 */
-	protected static $tokenCount;
-	
-	/**
-	 * 
-	 * Question for BBCode Editor to prompt user for tag parameter.
-	 */
-	protected static $buttonParameterQuestion = "Enter Image URL";
-	
+    /**
+     *
+     * Calculated in LexemeBaseStatic::warmup method,
+     * by number of indices found in $lexingPattern.
+     *
+     * @var int $tokenCount
+     */
+    protected static $tokenCount;
+
+    /**
+     *
+     * Question for BBCode Editor to prompt user for tag parameter.
+     */
+    protected static $buttonParameterQuestion = "Enter Image URL";
+
     /**
      *
      * @access public
@@ -178,7 +178,7 @@ class Image extends LexemeBase implements LexemeInterface
             }
 
             $this->parameters[0] = $url;
-			
+
             return true;
         }
 
@@ -222,7 +222,7 @@ class Image extends LexemeBase implements LexemeInterface
                 return str_replace('{{ param[0] }}', '', static::$lexingHtml[$this->tokenIndex]);
             }
         }
-		
+
         return $this->renderErrors();
     }
 

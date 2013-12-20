@@ -33,7 +33,7 @@ class TableContainer
      *
      * @access protected
      */
-	protected $lexemeClassesDefault = array(
+    protected $lexemeClassesDefault = array(
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Asset\Image',
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Asset\Vimeo',
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Asset\Youtube',
@@ -56,90 +56,90 @@ class TableContainer
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\SuperScript',
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\Underline',
     );
-	
+
     /**
      *
      * @var array $tableLexemes
      */
-	protected $lexemeClasses = array();
-	
-	/**
+    protected $lexemeClasses = array();
+
+    /**
      *
      * @var string $plainText
      */
-	protected $tableACL = array();
-	
+    protected $tableACL = array();
+
     /**
      *
      * @access public
      */
     public function __construct($acl = null, $lexemeClasses = null)
     {
-		if ($lexemeClasses == null) {
-			$lexemeClasses = $this->lexemeClassesDefault;
-		}
-		
-		$this->setTableLexemes($lexemeClasses);
-		
-		if ($acl == null) {
-			$acl = array(
-				'default' => array(
-					'enable_editor' => true,
-					'enable_parser' => true,
-					'group' => array(
-						'white_list' => array('*'),
-						'black_list' => array()
-					),
-					'tag' => array(
-						'white_list' => array('*'),
-						'black_list' => array()
-					)
-				)
-			);
-		}
-		
-		$this->setTableACL($acl);
+        if ($lexemeClasses == null) {
+            $lexemeClasses = $this->lexemeClassesDefault;
+        }
+
+        $this->setTableLexemes($lexemeClasses);
+
+        if ($acl == null) {
+            $acl = array(
+                'default' => array(
+                    'enable_editor' => true,
+                    'enable_parser' => true,
+                    'group' => array(
+                        'white_list' => array('*'),
+                        'black_list' => array()
+                    ),
+                    'tag' => array(
+                        'white_list' => array('*'),
+                        'black_list' => array()
+                    )
+                )
+            );
+        }
+
+        $this->setTableACL($acl);
     }
-	
-	public function setTableLexemes($lexemeClasses)
-	{
-		$this->lexemeClasses = array_merge($this->lexemeClasses, $lexemeClasses);
-		
-		foreach ($lexemeClasses as $lexeme) {
-			$lexeme::warmup();
-			
-			foreach ($this->lexemeClasses as $nestable) {
-				$lexeme::cascadeACL($nestable);
-			}
-		}
-	}
-	
-	public function setTableACL($acls)
-	{
-		foreach ($acls as $name => $acl) {
-			$this->addTableACL($name, $acl);
-		}
-	}
-	
-	public function addTableACL($name, $acl)
-	{
-		$this->tableACL[$name] = new TableACL(
-			$acl['enable_editor'],
-			$acl['enable_parser'],
-			$acl['group']['white_list'],
-			$acl['group']['black_list'],
-			$acl['tag']['white_list'],
-			$acl['tag']['black_list'],
-			$this->lexemeClasses
-		);
-	}
-	
-	public function getTableACL($name)
-	{
-		if (! array_key_exists($name, $this->tableACL)) {
-			throw new \Exception('ACL Table "' . $name . '" not found!');
-		}
-		
-		return $this->tableACL[$name];
-	}
+
+    public function setTableLexemes($lexemeClasses)
+    {
+        $this->lexemeClasses = array_merge($this->lexemeClasses, $lexemeClasses);
+
+        foreach ($lexemeClasses as $lexeme) {
+            $lexeme::warmup();
+
+            foreach ($this->lexemeClasses as $nestable) {
+                $lexeme::cascadeACL($nestable);
+            }
+        }
+    }
+
+    public function setTableACL($acls)
+    {
+        foreach ($acls as $name => $acl) {
+            $this->addTableACL($name, $acl);
+        }
+    }
+
+    public function addTableACL($name, $acl)
+    {
+        $this->tableACL[$name] = new TableACL(
+            $acl['enable_editor'],
+            $acl['enable_parser'],
+            $acl['group']['white_list'],
+            $acl['group']['black_list'],
+            $acl['tag']['white_list'],
+            $acl['tag']['black_list'],
+            $this->lexemeClasses
+        );
+    }
+
+    public function getTableACL($name)
+    {
+        if (! array_key_exists($name, $this->tableACL)) {
+            throw new \Exception('ACL Table "' . $name . '" not found!');
+        }
+
+        return $this->tableACL[$name];
+    }
 }

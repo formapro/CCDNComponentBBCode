@@ -47,27 +47,27 @@ class Vimeo extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Asset';
 
-	/**
-	 * 
-	 * @var string $buttonLabel
-	 */
-	protected static $buttonLabel = 'Vimeo';
-	
-	/**
-	 * 
-	 * @var string $buttonIcon
-	 */
-	protected static $buttonIcon = '';
+    /**
+     *
+     * @var string $buttonLabel
+     */
+    protected static $buttonLabel = 'Vimeo';
 
-	/**
-	 * 
-	 * @var string $buttonGroup
-	 */
-	protected static $buttonGroup = array(
-		'group' => 'webvideo',
-		'order' => 1
-	);
-	
+    /**
+     *
+     * @var string $buttonIcon
+     */
+    protected static $buttonIcon = '';
+
+    /**
+     *
+     * @var string $buttonGroup
+     */
+    protected static $buttonGroup = array(
+        'group' => 'webvideo',
+        'order' => 1
+    );
+
     /**
      *
      * 1) First level index should match the token
@@ -134,23 +134,23 @@ class Vimeo extends LexemeBase implements LexemeInterface
      *
      * @var object $nestingACL
      */
-	protected static $nestingACL;
+    protected static $nestingACL;
 
-	/**
-	 * 
-	 * Calculated in LexemeBaseStatic::warmup method,
-	 * by number of indices found in $lexingPattern.
-	 * 
-	 * @var int $tokenCount
-	 */
-	protected static $tokenCount;
-	
-	/**
-	 * 
-	 * Question for BBCode Editor to prompt user for tag parameter.
-	 */
-	protected static $buttonParameterQuestion = "Enter Vimeo Video ID";
-	
+    /**
+     *
+     * Calculated in LexemeBaseStatic::warmup method,
+     * by number of indices found in $lexingPattern.
+     *
+     * @var int $tokenCount
+     */
+    protected static $tokenCount;
+
+    /**
+     *
+     * Question for BBCode Editor to prompt user for tag parameter.
+     */
+    protected static $buttonParameterQuestion = "Enter Vimeo Video ID";
+
     /**
      *
      * @access public

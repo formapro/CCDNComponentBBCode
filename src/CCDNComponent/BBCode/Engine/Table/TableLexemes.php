@@ -30,92 +30,91 @@ class TableLexemes
      *
      * @var array $lexemeClasses
      */
-	protected $lexemeClasses = array();
-	
+    protected $lexemeClasses = array();
+
     /**
      *
      * Fully-qualified-namespace for NodeTree type.
      *
      * @var string $classNodeTree
      */
-	protected $classNodeTree = '\CCDNComponent\BBCode\Node\Tree\NodeTree';
-	
+    protected $classNodeTree = '\CCDNComponent\BBCode\Node\Tree\NodeTree';
+
     /**
      *
      * Fully-qualified-namespace for PlainText Lexeme type.
      *
      * @var string $classPlainText
      */
-	protected $classPlainText = '\CCDNComponent\BBCode\Node\Lexeme\Tag\PlainText';
-	
+    protected $classPlainText = '\CCDNComponent\BBCode\Node\Lexeme\Tag\PlainText';
+
     /**
      *
      * @access public
      */
     public function __construct(array $lexemeClasses = null)
     {
-		if (null == $lexemeClasses) {
-			$lexemeClasses = array();
-		}
-		
-		$this->setLexemes($lexemeClasses);
+        if (null == $lexemeClasses) {
+            $lexemeClasses = array();
+        }
+
+        $this->setLexemes($lexemeClasses);
     }
-	
-	public function setLexemes($lexemeClasses)
-	{
-		foreach ($lexemeClasses as $lexemeClass) {
-			$this->addLexeme($lexemeClass);
-		}
-	}
-	
-	public function addLexeme($lexemeClass)
-	{
-		if (in_array($lexemeClass, $this->lexemeClasses)) {
-			return;
-		}
-		
-		$this->lexemeClasses[$lexemeClass::getCanonicalTokenName()] = $lexemeClass;
-	}
-	
-	public function hasCanonicalTokenName($canonicalLexemeTokenName)
-	{
-		if (array_key_exists($canonicalLexemeTokenName, $this->lexemeClasses)) {
-			return true;
-		}
-		
-		return false;
-	}
+
+    public function setLexemes($lexemeClasses)
+    {
+        foreach ($lexemeClasses as $lexemeClass) {
+            $this->addLexeme($lexemeClass);
+        }
+    }
+
+    public function addLexeme($lexemeClass)
+    {
+        if (in_array($lexemeClass, $this->lexemeClasses)) {
+            return;
+        }
+
+        $this->lexemeClasses[$lexemeClass::getCanonicalTokenName()] = $lexemeClass;
+    }
+
+    public function hasCanonicalTokenName($canonicalLexemeTokenName)
+    {
+        if (array_key_exists($canonicalLexemeTokenName, $this->lexemeClasses)) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      *
      * @access public
-     * @param  string         $lookupStr
+     * @param  string          $lookupStr
      * @return LexemeInterface
      */
     public function lookup($lookupStr)
     {
         $lookupStrCanonical = strtoupper($lookupStr);
-    
+
         foreach ($this->lexemeClasses as $lexeme) {
             if ($lexeme::isPatternMatch($lookupStr)) {
                 return $lexeme;
             }
         }
-    
+
         return null;
     }
-	
-	public function getClassNodeTree()
-	{
-		return $this->classNodeTree;
-	}
 
-	public function getClassPlainText()
-	{
-		return $this->classPlainText;
-	}
+    public function getClassNodeTree()
+    {
+        return $this->classNodeTree;
+    }
 
-	
+    public function getClassPlainText()
+    {
+        return $this->classPlainText;
+    }
+
     /**
      *
      * @access public

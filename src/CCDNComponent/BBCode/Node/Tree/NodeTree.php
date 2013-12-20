@@ -182,15 +182,15 @@ class NodeTree extends NodeBase implements NodeTreeInterface, NodeInterface
 
         $fn = $this->getNodeFirst();
 
-		if (! $fn::isTree()) {
-	        if ($fn->isValid(true)) {
-	            $lastValid = $fn;
-	        } else {
-	            $lastValid = $parentNode;
-	        }
-		} else {
-			$lastValid = $parentNode;
-		}
+        if (! $fn::isTree()) {
+            if ($fn->isValid(true)) {
+                $lastValid = $fn;
+            } else {
+                $lastValid = $parentNode;
+            }
+        } else {
+            $lastValid = $parentNode;
+        }
 
         foreach ($this->nodes as $node) {
             if ($node::isTree()) {

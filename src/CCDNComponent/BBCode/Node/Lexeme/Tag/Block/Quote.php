@@ -47,27 +47,27 @@ class Quote extends LexemeBase implements LexemeInterface
      */
     protected static $canonicalGroupName = 'Block';
 
-	/**
-	 * 
-	 * @var string $buttonLabel
-	 */
-	protected static $buttonLabel = 'Quote';
-	
-	/**
-	 * 
-	 * @var string $buttonIcon
-	 */
-	protected static $buttonIcon = 'icon-comment';
-	
-	/**
-	 * 
-	 * @var string $buttonGroup
-	 */
-	protected static $buttonGroup = array(
-		'group' => 'block',
-		'order' => 0
-	);
-	
+    /**
+     *
+     * @var string $buttonLabel
+     */
+    protected static $buttonLabel = 'Quote';
+
+    /**
+     *
+     * @var string $buttonIcon
+     */
+    protected static $buttonIcon = 'glyphicon glyphicon-comment';
+
+    /**
+     *
+     * @var string $buttonGroup
+     */
+    protected static $buttonGroup = array(
+        'group' => 'block',
+        'order' => 0
+    );
+
     /**
      *
      * 1) First level index should match the token
@@ -134,23 +134,23 @@ class Quote extends LexemeBase implements LexemeInterface
      *
      * @var object $nestingACL
      */
-	protected static $nestingACL;
+    protected static $nestingACL;
 
-	/**
-	 * 
-	 * Calculated in LexemeBaseStatic::warmup method,
-	 * by number of indices found in $lexingPattern.
-	 * 
-	 * @var int $tokenCount
-	 */
-	protected static $tokenCount;
-	
-	/**
-	 * 
-	 * Question for BBCode Editor to prompt user for tag parameter.
-	 */
-	protected static $buttonParameterQuestion = "Enter User/ Quote Source";
-	
+    /**
+     *
+     * Calculated in LexemeBaseStatic::warmup method,
+     * by number of indices found in $lexingPattern.
+     *
+     * @var int $tokenCount
+     */
+    protected static $tokenCount;
+
+    /**
+     *
+     * Question for BBCode Editor to prompt user for tag parameter.
+     */
+    protected static $buttonParameterQuestion = "Enter User/ Quote Source";
+
     /**
      *
      * @access public
