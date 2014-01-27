@@ -4,6 +4,7 @@ div.bb_wrapper pre {
 	border:none;
 	background:none;
 	white-space:pre-wrap;
+	word-break:normal;
 	margin-top:0px;
 	margin-bottom:0px;
 }
