@@ -60,16 +60,40 @@ class Lexer
     {
         $this->table = $table;
 
-        static::$scanChunks = $scanChunks;
-        static::$scanChunksSize = count($scanChunks);
-        static::$scanChunksIndex = 0;
+		$tokens = $this->tokenise($scanChunks);
+        $tree = $this->lexify($tokens);
+		
+		ld($tokens);
+		
+		$dirtyBranches = 0;
+		while ($dirtyBranches > 0) {
+			$dirtyBranches = 0;
+	        $tree = $this->lexify($tree);
 
-        $tree = $this->lexify();
+			foreach ($tree as $branch) {
+				if ($branch->isOpeningTag() && !$token::isStandalone()) {
+					$dirtyBranches++;
+				}
+			}
+		}
+
+		ldd($tree);
 
         $tree->cascadeValidate();
 
         return $tree;
     }
+
+	protected function tokenise($scanChunks)
+	{
+		$tokens = array();
+
+        foreach ($scanChunks as $scanStr) {
+            $tokens[] = $this->table->lookup($scanStr);
+		}
+		
+		return $tokens;
+	}
 
     /**
      *
@@ -84,47 +108,59 @@ class Lexer
      * @param NodeTreeInterface $parent
      * @param NodeInterface     $node
      */
-    protected function lexify($parent = null, $node = null)
+    protected function lexify($tokens)
     {
-        $tree = $this->table->createNodeTree();
+		$tree = array();
+		$tmpTree = null;
+		$lastOpen = null;
+		
+		foreach ($tokens as $id => $token) {
 
-        if ($parent) {
-            $tree->setNodeParent($parent);
-        }
+			if ($token->isOpeningTag() && !$token::isStandalone()) {
+				if (! $lastOpen) {
+					if ($token::getCanonicalLexemeName() != 'PlainText') {
+						$lastOpen = $token;
+						$tmpTree = array();
+					}
+				} else {
+					// start again, nothing found, so dump tmpTree into main tree.
+					$lastOpen = $token;
+					foreach ($tmpTree as $branch) {
+						$tree[] = $branch;
+					}
+					
+					$tmpTree = null;
+				}
+			}
 
-        if ($node) {
-            $tree->addNode($node);
-        }
+			if ($lastOpen) {
+				$tmpTree[] = $token;
+				if ($token->isClosingTag() && $token::getCanonicalLexemeName() == $lastOpen::getCanonicalLexemeName()) {
+					$subTree = $this->table->createNodeTree();
 
-        for (; static::$scanChunksIndex < static::$scanChunksSize; static::$scanChunksIndex++) {
-
-            $scanStr = static::$scanChunks[static::$scanChunksIndex];
-
-            $node = $this->table->lookup($scanStr);
-
-            if ($node::isLexable() && !$node::isStandAlone()) {
-
-                if ($node->isOpeningTag()) {
-                    static::$scanChunksIndex++;
-
-                    $tree->addNode($this->lexify($tree, $node));
-
-                } else {
-                    $tree->addNode($node);
-
-                    if ($node->isClosingTag()) {
-                        if ($tree->nodeMatchesFirst($node)) {
-                            if ($tree->hasNodeParent()) {
-                                return $tree;
-                            }
-                        }
-                    }
-                }
-            } else {
-                $tree->addNode($node);
-            }
-        } // endfor
-
-        return $tree;
+					foreach ($tmpTree as $branch) {
+						$subTree->addNode($branch);
+					}
+					
+					$tree[] = $subTree;
+					$subTree = null;
+					$tmpTree = null;
+				}
+			} else {
+				$tree[] = $token;
+			}
+		}
+		
+		// Catch anything left in tmp tree, and append it to what we have.
+		// We will make it a subnode to prevent it from being relexed into
+		// infinitely, because clearly something is missing, i.e a closing tag.
+		if ($tmpTree) {
+			$subTree = $this->table->createNodeTree();
+			foreach ($tmpTree as $branch) {
+				$subTree->addNode($branch);
+			}
+		}
+		
+		return $tree;
     }
 }
