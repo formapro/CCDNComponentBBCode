@@ -188,7 +188,7 @@ class Code extends LexemeBase implements LexemeInterface
         if ($this->isValid(true)) {
             if ($this->tokenIndex == 0) {
                 if (array_key_exists(0, $this->parameters)) {
-                    $tab = '<ul class="nav nav-tabs"><li class="active"><a href="#">' . htmlentities($this->parameters[0], ENT_QUOTES) . '</a></li></ul>';
+                    $tab = '<ul class="nav nav-tabs"><li class="active"><a href="#">' . htmlentities($this->parameters[0], ENT_QUOTES, 'UTF-8') . '</a></li></ul>';
 
                     return str_replace('{{ param[0] }}', $tab, static::$lexingHtml[$this->tokenIndex]);
                 }

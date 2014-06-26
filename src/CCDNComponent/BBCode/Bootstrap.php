@@ -108,7 +108,7 @@ class Bootstrap
             // Parse the lexed symbol tree to get an HTML output.
             $html = $this->parser->process($symbolTree, $table);
         } else {
-            $html = '<pre>' . htmlentities($input, ENT_QUOTES) . '</pre>';
+            $html = '<pre>' . htmlentities($input, ENT_QUOTES, 'UTF-8') . '</pre>';
         }
 
         return $html;

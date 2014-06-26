@@ -140,14 +140,14 @@ class PlainText extends LexemeBase implements LexemeInterface
             if (! $fn::isTree()) {
                 if ($fn) {
                     if ($fn::getCanonicalGroupName() != 'Format') {
-                        return htmlentities(ltrim(rtrim($this->lexingMatch)), ENT_QUOTES).'&shy;';
+                        return htmlentities(ltrim(rtrim($this->lexingMatch)), ENT_QUOTES, 'UTF-8').'&shy;';
                     }
                 }
             }
         }
 
         // &shy; is an invisible char, without it, PHP ignores newlines for some reason, very unusual behaviour.
-        return htmlentities($this->lexingMatch, ENT_QUOTES).'&shy;';
+        return htmlentities($this->lexingMatch, ENT_QUOTES, 'UTF-8').'&shy;';
     }
 
     /**
