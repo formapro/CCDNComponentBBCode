@@ -188,7 +188,7 @@ class Quote extends LexemeBase implements LexemeInterface
         if ($this->isValid(true)) {
             if ($this->tokenIndex == 0) {
                 if (array_key_exists(0, $this->parameters)) {
-                    return str_replace('{{ param[0] }}', '<strong><cite class="lead"><bdi>' . htmlentities($this->parameters[0], ENT_QUOTES) . '</bdi></cite></strong>', static::$lexingHtml[$this->tokenIndex]);
+                    return str_replace('{{ param[0] }}', '<strong><cite class="lead"><bdi>' . htmlentities($this->parameters[0], ENT_QUOTES, 'UTF-8') . '</bdi></cite></strong>', static::$lexingHtml[$this->tokenIndex]);
                 }
 
                 return str_replace('{{ param[0] }}', '', static::$lexingHtml[$this->tokenIndex]);

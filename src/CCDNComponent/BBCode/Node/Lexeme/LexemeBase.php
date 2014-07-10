@@ -432,7 +432,7 @@ abstract class LexemeBase extends LexemeBaseStatic implements LexemeInterface, N
 
         $message = '<ul>' . $message . '</ul>';
 
-        return '<span class="bb_invalid_tag" data-tip="bottom" title data-original-title="' . $message . '">' . htmlentities($this->lexingMatch, ENT_QUOTES) . '</span>';
+        return '<span class="bb_invalid_tag" data-tip="bottom" title data-original-title="' . $message . '">' . htmlentities($this->lexingMatch, ENT_QUOTES, 'UTF-8') . '</span>';
     }
 
     /**

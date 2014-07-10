@@ -202,7 +202,7 @@ class Youtube extends LexemeBase implements LexemeInterface
     public function cascadeRender()
     {
         if ($this->isValid(true)) {
-            return str_replace('{{ param[0] }}', htmlentities($this->parameters[0], ENT_QUOTES), static::$lexingHtml[$this->tokenIndex]);
+            return str_replace('{{ param[0] }}', htmlentities($this->parameters[0], ENT_QUOTES, 'UTF-8'), static::$lexingHtml[$this->tokenIndex]);
         }
 
         return $this->renderErrors();
