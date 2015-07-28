@@ -124,7 +124,7 @@ class Link extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingHtml
      */
-    protected static $lexingHtml = array('<a href="{{ param[0] }}">', '</a>');
+    protected static $lexingHtml = array('<a href="{{ param[0] }}" target="_blank">', '</a>');
 
     /**
      *
