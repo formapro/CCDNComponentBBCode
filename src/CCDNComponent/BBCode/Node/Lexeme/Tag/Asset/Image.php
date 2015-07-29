@@ -113,7 +113,8 @@ class Image extends LexemeBase implements LexemeInterface
      *
      * @var array $lexingPattern
      */
-    protected static $lexingPattern = array('/^\[IMG?(\=(.*?)*)\]$/', '/^\[\/IMG\]$/');
+    protected static $lexingPattern = array('/^\[IMG(\=([^\]]*)*)\]$/', '/^\[\/IMG\]$/');
+
 
     /**
      *
