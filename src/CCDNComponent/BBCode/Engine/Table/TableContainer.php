@@ -55,6 +55,7 @@ class TableContainer
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\SubScript',
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\SuperScript',
         '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\Underline',
+        '\CCDNComponent\BBCode\Node\Lexeme\Tag\Format\AlignCenter',
     );
 
     /**
