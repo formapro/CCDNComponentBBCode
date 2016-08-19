@@ -128,7 +128,6 @@ class AlignCenter extends LexemeBase implements LexemeInterface
     public static function subNodeGroupBlackList()
     {
         return array(
-            'Asset',
             'Block',
         );
     }
